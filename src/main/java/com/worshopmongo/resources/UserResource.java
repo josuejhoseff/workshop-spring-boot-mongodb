@@ -2,19 +2,18 @@ package com.worshopmongo.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.worshopmongo.domain.Post;
 import com.worshopmongo.domain.User;
 import com.worshopmongo.dto.UserDTO;
 import com.worshopmongo.services.UserService;
@@ -64,5 +63,12 @@ public class UserResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/posts")
+	//@GetMapping
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 }
